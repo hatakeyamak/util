@@ -1,8 +1,10 @@
 
 on lpc
 ------
+```
 edit directory.list
 bash make_list_all.sh
+```
 
 on kodiak
 ---------
