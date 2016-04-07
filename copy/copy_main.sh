@@ -7,9 +7,9 @@ cd ~/CMSSW_8_0_1/src
 eval `scramv1 runtime -sh`
 export X509_USER_PROXY=~/.x509_user_proxy
 
-cd $ORDPWD
-rm $ORDPWD/tmp/*.txt
-rm $ORDPWD/tmp/*_split*
+cd $ORGPWD
+rm $ORGPWD/tmp/*.txt
+rm $ORGPWD/tmp/*_split*
 
 IFS=$'\n'
 
