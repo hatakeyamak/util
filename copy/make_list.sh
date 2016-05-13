@@ -3,7 +3,7 @@
 export lfnDirectory=$1
 #echo $lfnDirectory $string
 
-export dateStr=`date --date='-365 days' +"%Y-%m-%d %H:%M:%S"`
+export dateStr=`date --date='-60 days' +"%Y-%m-%d %H:%M:%S"`
 timestamp=$(date -d "$dateStr" +%s)
 
 IFS=$'\n'
