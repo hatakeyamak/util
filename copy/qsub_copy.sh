@@ -12,7 +12,17 @@ export filelist=$filelist
 export toDir=$toDir
 export X509_USER_PROXY=~/.x509_user_proxy
 
+#
+# Without Baylor SE    
+mkdir -p '/data3/'$toDir
 python ~/local/bin/data_replica.py \
   --from-site T3_US_FNALLPC \
-  --to-site T3_US_Baylor \
-  $filelist $toDir
+  $filelist 'file:////data3/'$toDir
+
+# 
+# With Baylor SE
+#python ~/local/bin/data_replica.py \
+#  --from-site T3_US_FNALLPC \
+# --to-site T3_US_Baylor 
+# $filelist $toDir
+
