@@ -32,7 +32,7 @@ while read p; do
     export DIR=`echo $p | awk '{print $1}'`
     echo $p $KEY $DIR
     #split --lines=2000 $KEY.txt $KEY'_split'
-    split --lines=100 $KEY.txt $KEY'_split'
+    split --lines=1000 $KEY'_missing.txt' $KEY'_split'
     for f in `ls | grep $KEY'_split'`; do
 	echo $f
 	qsub -q moonshot -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
