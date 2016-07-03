@@ -33,9 +33,11 @@ while read p; do
      export DIR=`echo $p | awk '{print $1}'`
      echo $p $KEY $DIR
      touch $KEY'_missing.txt'
+     touch $KEY'_obsolete.txt'
      grep 'store' < $KEY'.txt' | { 
 	 while read q; do
 	     export FILE=`echo $q | awk '{printf("/data3/%s",$1)}'`
+	     export LFN=`echo $q | awk '{print $1}'`
 	     export remoteFileTime=`echo $q | awk '{print $2}'`
 	     if [ -f "$FILE" ];
 	     then
@@ -46,13 +48,13 @@ while read p; do
 		 then
 		     echo "File $FILE does exist but local file is obsolete."
 		     #echo $q
-		     echo $q >> $KEY'_missing.txt'
+		     echo $LFN >> $KEY'_obsolete.txt'
                  else
 		     echo "File $FILE exist and local file is up-to-date." > /dev/null
                  fi
 	     else
 		 echo "File $FILE does not exist"
-		 echo $q >> $KEY'_missing.txt'
+		 echo $LFN >> $KEY'_missing.txt'
 	     fi
 #    export KEY=`echo $p | awk '{print $2}'`
 #    export DIR=`echo $p | awk '{print $1}'`
