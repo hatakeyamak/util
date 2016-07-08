@@ -10,7 +10,7 @@ IFS=$'\n'
 
 #for curFile in *; do
 #for f in $(ls -1); do 
-for f in `xrdfs root://cmseos.fnal.gov ls -l $(echo $lfnDirectory)`; do
+for f in `xrdfs root://cmseos.fnal.gov ls -l $(echo $lfnDirectory) | grep root`; do
     #echo $f 
     export DATE=`echo $f | awk '{print $2,$3}'`
     export FILE=`echo $f | awk '{print $5}'`
