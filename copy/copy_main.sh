@@ -1,5 +1,10 @@
 #!/bin/bash
 
+type=$1
+# 1: make copy list of files
+# 2: list of missing files
+# 3: list of obsolete files
+
 export ORGPWD=$PWD
 
 source ~cmssoft/shrc >& /dev/null
@@ -23,15 +28,33 @@ while read p; do
     export KEY=`echo $p | awk '{print $2}'`
     export DIR=`echo $p | awk '{print $1}'`
     echo $p $KEY $DIR
-    #split --lines=2000 $KEY.txt $KEY'_split'
-    split --lines=1000 $KEY'_missing.txt' $KEY'_m_split'
-    for f in `ls | grep $KEY'_m_split'`; do
-	echo $f
+
+    if [ $type -eq 1 ]; then
+
+	split --lines=1000 $KEY'_copy.txt' $KEY'_c_split'
+	for f in `ls | grep $KEY'_c_split'`; do
+	    echo $f
+	    qsub -q moonshot -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
+	done
+
+    fi
+    if [ $type -ge 2 ]; then
+
+	split --lines=1000 $KEY'_missing.txt' $KEY'_m_split'
+	for f in `ls | grep $KEY'_m_split'`; do
+	    echo $f
+	    qsub -q moonshot -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
+	done
+
+    fi
+    if [ $type -eq 3 ]; then
+
+	split --lines=1000 $KEY'_obsolete.txt' $KEY'_o_split'
+	for f in `ls | grep $KEY'_o_split'`; do
+	    echo $f
 	qsub -q moonshot -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
-    done
-    split --lines=1000 $KEY'_obsolete.txt' $KEY'_o_split'
-    for f in `ls | grep $KEY'_o_split'`; do
-	echo $f
-	qsub -q moonshot -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
-    done
+	done
+
+    fi
+
 done } 
