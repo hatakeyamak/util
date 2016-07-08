@@ -15,15 +15,7 @@ IFS=$'\n'
 export remote=srm://cmseos.fnal.gov:8443/srm/v2/server?SFN=//eos/uscms/store/user/hatake/copy
 export remotePrefix=srm://cmseos.fnal.gov:8443/srm/v2/server?SFN=//
 
-#rm $ORGPWD/tmp/*.txt
-#for f in `lcg-ls -l -v -b -D srmv2 $remote`; do
-#    export FILE=`echo $f | awk '{print $7}'`
-#    export LFN=`echo $FILE | sed -e 's/\/eos//' | sed -e 's/\/uscms//'`
-#    export FILENAME=`basename $LFN`
-#    echo $FILE $LFN $FILENAME
-#    lcg-cp -v -b -T srmv2 -D srmv2 -n 1 -V cms $remote"/"$FILENAME file:$PWD/tmp/$FILENAME
-#done
-
+# split _missing.txt and _obsolete.txt, submit jobs
 rm $ORGPWD/tmp/*_split*
 cd tmp
 grep -v '^#' < directory.list | { 

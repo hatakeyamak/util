@@ -46,48 +46,16 @@ while read p; do
 		 #echo $remoteFileTime $localFileTime
                  if [ $remoteFileTime -gt $localFileTime ];
 		 then
-		     echo "File $FILE does exist but local file is obsolete."
+		     echo "File $FILE does exist but local file is obsolete." > /dev/null
 		     #echo $q
 		     echo $LFN >> $KEY'_obsolete.txt'
                  else
 		     echo "File $FILE exist and local file is up-to-date." > /dev/null
                  fi
 	     else
-		 echo "File $FILE does not exist"
+		 echo "File $FILE does not exist" > /dev/null
 		 echo $LFN >> $KEY'_missing.txt'
 	     fi
-#    export KEY=`echo $p | awk '{print $2}'`
-#    export DIR=`echo $p | awk '{print $1}'`
-#    echo $p $KEY $DIR
-#    #split --lines=2000 $KEY.txt $KEY'_split'
-#    split --lines=100 $KEY.txt $KEY'_split'
-#    for f in `ls | grep $KEY'_split'`; do
-#	echo $f
-#	qsub -q moonshot -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
-#    done
      done } 
-#     awk '{print $0}' $KEY'.txt' 
-#    cat $KEY'_tmp.txt'
-#    #split --lines=2000 $KEY.txt $KEY'_split'
-#    split --lines=100 $KEY.txt $KEY'_split'
-#    for f in `ls | grep $KEY'_split'`; do
-#	echo $f
-#	qsub -q moonshot -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
-#    done
 done } 
 
-
-#rm $ORGPWD/tmp/*_split*
-#cd tmp
-#grep -v '^#' < directory.list | { 
-#while read p; do
-#    export KEY=`echo $p | awk '{print $2}'`
-#    export DIR=`echo $p | awk '{print $1}'`
-#    echo $p $KEY $DIR
-#    #split --lines=2000 $KEY.txt $KEY'_split'
-#    split --lines=100 $KEY.txt $KEY'_split'
-#    for f in `ls | grep $KEY'_split'`; do
-#	echo $f
-#	qsub -q moonshot -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
-#    done
-#done } 
