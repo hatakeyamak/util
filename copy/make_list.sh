@@ -15,13 +15,14 @@ for f in `xrdfs root://cmseos.fnal.gov ls -l $(echo $lfnDirectory) | grep root`;
     export DATE=`echo $f | awk '{print $2,$3}'`
     export FILE=`echo $f | awk '{print $5}'`
     #stat -c %Y /eos/uscms/$FILE
-    export curFileStatTime=`stat -c %Y /eos/uscms/$FILE`
+    #export curFileStatTime=`stat -c %Y /eos/uscms/$FILE`
     #echo $DATE
     curFileMtime=$(date -d "$DATE" +%s)
+    #echo $curFileStatTime $curFileMtime
     #curFileMtime=$(stat -c %Y "$curFile")
     #xrdfs root://cmseos.fnal.gov ls -l $f | awk '{print $2}'
     #echo $curFileMtime $DATE $timestamp $dateStr
     if (( curFileMtime > timestamp )); then
-        echo $FILE $curFileStatTime
+        echo $FILE $curFileMtime
     fi
 done
