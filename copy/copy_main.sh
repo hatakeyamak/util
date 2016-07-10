@@ -11,6 +11,7 @@ source ~cmssoft/shrc >& /dev/null
 cd ~/CMSSW_8_0_1/src
 eval `scramv1 runtime -sh`
 export X509_USER_PROXY=~/.x509_user_proxy
+hostname
 
 cd $ORGPWD
 mkdir -p tmp

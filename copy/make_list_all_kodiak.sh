@@ -3,7 +3,7 @@
 IFS=$'\n'
 
 rm *_kodiak.txt
-grep -v '^#' < directory.list | { 
+grep -v '^#' < tmp/directory.list | { 
 while read p; do
     touch 'tmp/'$KEY'_kodiak.txt'
     export KEY=`echo $p | awk '{print $2}'`

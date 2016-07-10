@@ -5,8 +5,11 @@
 # qsub -v filelist=list_Run2ProductionV1_Spring15_TTJets_TuneCUETP8M1.txt toDir=/store/user/hatake/ntuples/SusyRA2Analysis2015/Run2ProductionV2/ qsub_copy.sh
 #
 
+source ~cmssoft/shrc >& /dev/null
+cd ~/CMSSW_8_0_1/src
+eval `scramv1 runtime -sh`
 cd $PBS_O_WORKDIR
-source ~cmssoft/shrc
+hostname
 
 export filelist=$filelist
 export toDir=$toDir
