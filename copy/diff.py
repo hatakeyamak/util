@@ -27,6 +27,7 @@ for line in file("tmp/V9.txt"):
                 print lfn1,time_lpc,time_kodiak
                 f2.write(str(lfn1))
                 f2.write('\n')
+            break    
 
     if (checker == False):
         f1.write(str(lfn1))

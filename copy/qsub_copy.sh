@@ -9,7 +9,7 @@ source ~cmssoft/shrc >& /dev/null
 cd ~/CMSSW_8_0_1/src
 eval `scramv1 runtime -sh`
 cd $PBS_O_WORKDIR
-hostname
+echo 'hostname' `hostname`
 
 export filelist=$filelist
 export toDir=$toDir

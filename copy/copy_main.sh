@@ -11,7 +11,7 @@ source ~cmssoft/shrc >& /dev/null
 cd ~/CMSSW_8_0_1/src
 eval `scramv1 runtime -sh`
 export X509_USER_PROXY=~/.x509_user_proxy
-hostname
+echo 'hostname' `hostname`
 
 cd $ORGPWD
 mkdir -p tmp
@@ -32,7 +32,7 @@ while read p; do
 
     if [ $type -eq 1 ]; then
 
-	split --lines=1000 $KEY'_copy.txt' $KEY'_c_split'
+	split --lines=100 $KEY'_copy.txt' $KEY'_c_split'
 	for f in `ls | grep $KEY'_c_split'`; do
 	    echo $f
 	    qsub -q moonshot -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
@@ -41,16 +41,16 @@ while read p; do
     fi
     if [ $type -ge 2 ]; then
 
-	split --lines=1000 $KEY'_missing.txt' $KEY'_m_split'
+	split --lines=20 $KEY'_missing.txt' $KEY'_m_split'
 	for f in `ls | grep $KEY'_m_split'`; do
 	    echo $f
-	    qsub -q moonshot -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
+	    qsub -q batch -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
 	done
 
     fi
     if [ $type -eq 3 ]; then
 
-	split --lines=1000 $KEY'_obsolete.txt' $KEY'_o_split'
+	split --lines=100 $KEY'_obsolete.txt' $KEY'_o_split'
 	for f in `ls | grep $KEY'_o_split'`; do
 	    echo $f
 	qsub -q moonshot -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh

@@ -8,21 +8,22 @@ type=$1
 
 export ORGPWD=$PWD
 
-source ~cmssoft/shrc >& /dev/null
-cd ~/CMSSW_8_0_1/src
-eval `scramv1 runtime -sh`
-export X509_USER_PROXY=~/.x509_user_proxy
-
-cd $ORGPWD
-mkdir -p tmp
-
-IFS=$'\n'
-
-export remote=srm://cmseos.fnal.gov:8443/srm/v2/server?SFN=//eos/uscms/store/user/hatake/copy
-export remotePrefix=srm://cmseos.fnal.gov:8443/srm/v2/server?SFN=//
-
 # Copy files from cmslpc
 if [ $type -eq 0 ]; then
+
+    source ~cmssoft/shrc >& /dev/null
+    cd ~/CMSSW_8_0_1/src
+    eval `scramv1 runtime -sh`
+    export X509_USER_PROXY=~/.x509_user_proxy
+
+    cd $ORGPWD
+    mkdir -p tmp
+
+    IFS=$'\n'
+
+    export remote=srm://cmseos.fnal.gov:8443/srm/v2/server?SFN=//eos/uscms/store/user/hatake/copy
+    export remotePrefix=srm://cmseos.fnal.gov:8443/srm/v2/server?SFN=//
+
     rm $ORGPWD/tmp/*.txt
     echo 'For loop over files in a remote directory'
     for f in `lcg-ls -l -b -D srmv2 $remote`; do
