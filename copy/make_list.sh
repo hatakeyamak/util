@@ -8,7 +8,7 @@ timestamp=$(date -d "$dateStr" +%s)
 
 IFS=$'\n'
 
-xrdfs root://cmseos.fnal.gov ls -l $(echo $lfnDirectory) | grep root | awk '{split($2,date,"-");split($3,hms,":");time=mktime(date[1] " " date[2] " " date[3] " " hms[1] " " hms[2] " " hms[3]); printf("%s %d\n"),$5,time;}'
+xrdfs root://cmseos.fnal.gov ls -l $(echo $lfnDirectory) | grep root | awk '{split($2,date,"-");split($3,hms,":");time=mktime(date[1] " " date[2] " " date[3] " " hms[1] " " hms[2] " " hms[3]); printf("%s %d\n"),$5,time;}' | sort
 
 #for f in `xrdfs root://cmseos.fnal.gov ls -l $(echo $lfnDirectory) | grep root`; do
 #    export DATE=`echo $f | awk '{print $2,$3}'`
