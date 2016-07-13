@@ -2,9 +2,9 @@
 
 type=$1
 # 0: copy from cmslpc
-# 1: make copy list of files
-# 2: list of missing files
-# 3: list of missing and obsolete files
+# 1: make list of files (all files)
+# 2: make list of missing files
+# 3: make list of missing and obsolete files
 
 export ORGPWD=$PWD
 
@@ -63,10 +63,15 @@ if [ $type -ge 1 ]; then
 
 	    elif [ $type -ge 2 ]; then 
 		grep 'store' < $KEY'.txt' | { 
-		    while read q; do
-			export FILE=`echo $q | awk '{printf("/data3/%s",$1)}'`
-			export LFN=`echo $q | awk '{print $1}'`
-			export remoteFileTime=`echo $q | awk '{print $2}'`
+		    while read LFN remoteFileTime; do
+			#array=(`echo $q | sed 's/,/\n/g'`)
+			#echo $q $r ${array[0]} ${array[1]} 
+			#export LFN=${array[0]}
+			export FILE='/data3'$LFN
+			#export remoteFileTime=${array[1]}
+			#export FILE=`echo $q | awk '{printf("/data3/%s",$1)}'`
+			#export LFN=`echo $q | awk '{print $1}'`
+			#export remoteFileTime=`echo $q | awk '{print $2}'`
 			if [ -f "$FILE" ];
 			then
 			    echo "File $FILE exist." > /dev/null

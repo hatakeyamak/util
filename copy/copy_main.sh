@@ -41,7 +41,7 @@ while read p; do
     fi
     if [ $type -ge 2 ]; then
 
-	split --lines=20 $KEY'_missing.txt' $KEY'_m_split'
+	split --lines=50 $KEY'_missing.txt' $KEY'_m_split'
 	for f in `ls | grep $KEY'_m_split'`; do
 	    echo $f
 	    qsub -q batch -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
