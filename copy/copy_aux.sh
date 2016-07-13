@@ -38,16 +38,6 @@ fi
 # Make copy file lists
 if [ $type -ge 1 ]; then
 
-    if [ $type -eq 1 ]; then
-	rm $ORGPWD/tmp/*_copy.txt	
-    elif [ $type -eq 2 ]; then 
-	rm $ORGPWD/tmp/*_missing.txt	
-    elif [ $type -eq 3 ]; then 
-	rm $ORGPWD/tmp/*_obsolete.txt	
-    elif [ $type -eq 4 ]; then 
-	rm $ORGPWD/tmp/*_redundant.txt	
-    fi
-
     echo 'while loop'
     cd tmp
     grep -v '^#' < directory.list | { 
@@ -56,13 +46,15 @@ if [ $type -ge 1 ]; then
 	    export DIR=`echo $p | awk '{print $1}'`
 	    #export MODE=`echo $p | awk '{print $3}'`
 	    echo $p $KEY $DIR
-	    touch $KEY'_missing.txt'
-	    touch $KEY'_obsolete.txt'
 
 	    if [ $type -eq 1 ]; then
+		rm    $KEY'_copy.txt'
+		touch $KEY'_copy.txt'
 		awk '{print $1}' $KEY'.txt' > $KEY'_copy.txt' 
 
 	    elif [ $type -eq 2 ]; then 
+		rm    $KEY'_missing.txt'
+		touch $KEY'_missing.txt'
 		grep 'store' < $KEY'.txt' | { 
 		    while read LFN remoteFileTime; do
 			export FILE='/data3'$LFN
@@ -76,30 +68,25 @@ if [ $type -ge 1 ]; then
 		    done } 
 
 	    elif [ $type -eq 3 ]; then 
-		rm 'tmp/'$KEY'_kodiak.txt'
-		touch 'tmp/'$KEY'_kodiak.txt'
-		./make_list_kodiak.sh $DIR | sort >& 'tmp/'$KEY'_kodiak.txt'
-		grep 'store' < $KEY'.txt' | { 
-		    while read LFN remoteFileTime; do
-			export FILE='/data3'$LFN
-			if [ -f "$FILE" ];
+		rm    $KEY'_obsolete.txt'
+		rm    $KEY'_kodiak.txt'
+		rm    $KEY'_combined.txt'
+		touch $KEY'_obsolete.txt'
+		touch $KEY'_kodiak.txt'
+		touch $KEY'_combined.txt'
+		../make_list_kodiak.sh $DIR | sort >& $KEY'_kodiak.txt'
+		sort -k1 $KEY'_kodiak.txt' | join $KEY'.txt' - >& $KEY'_combined.txt'
+		grep 'store' < $KEY'_combined.txt' | { 
+		    while read LFN remoteFileTime localFileTime; do
+
+			if [ $remoteFileTime -gt $localFileTime ];
 			then
-			    echo "File $FILE exist." > /dev/null			
-#			    if [ $type -ge 3 ]; then 
-#
-#				export localFileTime=`stat -c %Y $FILE`
-#				if [ $remoteFileTime -gt $localFileTime ];
-#				then
-#				    echo "File $FILE does exist but local file is obsolete." > /dev/null
-#				    echo $LFN >> $KEY'_obsolete.txt'
-#				else
-#				    echo "File $FILE exist and local file is up-to-date." > /dev/null
-#				fi
-#			    fi			    
+			    echo "File $FILE does exist but local file is obsolete." > /dev/null
+			    echo 'rm /data3'$LFN >> $KEY'_obsolete.txt'
 			else
-			    echo "File $FILE does not exist" > /dev/null
-			    echo $LFN >> $KEY'_missing.txt'
+			    echo "File $FILE exist and local file is up-to-date." > /dev/null
 			fi
+			
 		    done } 
 	    fi
 	done } 
