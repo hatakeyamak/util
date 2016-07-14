@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #process: 0 = SinglePionE50, 1 = ZMM, 2 = ZEE, 3 = TTbar
-NPROC=0
-DIR=.
-ID=0
-SEED=-1
-RUN=""
+export NPROC=0
+export DIR=.
+export ID=0
+export SEED=-1
+export RUN=""
 
 #check arguments
 while getopts ":p:s:i:d:r" opt; do
