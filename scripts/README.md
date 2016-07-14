@@ -7,9 +7,8 @@ Creating basic configuration files
 ./util/scripts/MC_Phase1.sh -p 1 -m 3 -e 100 -d WF3_ZMM_v11 -n
 ```
 
-Creating modified configuration files in order to run several parallel jobs 
-(and run locally)
----------------------------------------------------------------------------
+Creating modified configuration files in order to run several parallel jobs (and run locally)
+---------------------------------------------------------------------------------------------
 ```
 ./util/scripts/run_MC_Phase1.sh -p 1 -d WF1_ZMM_v11
 ./util/scripts/run_MC_Phase1.sh -p 1 -d WF1_ZMM_v11 -s 1 -i 1 -r 
