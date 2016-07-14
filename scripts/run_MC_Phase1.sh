@@ -92,8 +92,7 @@ printf("outfile = \047file:step3_\047+str(idnum)+\047.root\047\n");
 printf("outfile2 = \047file:step3_\047+str(idnum)+\047_inMINIAODSIM.root\047\n");
 printf("\n")}
 /Production/{printf("process.source.fileNames = cms.untracked.vstring(infile)\n");}
-/Additional/
-{printf("process.RECOSIMoutput.fileName = cms.untracked.string(outfile)\n");
+/Additional/{printf("process.RECOSIMoutput.fileName = cms.untracked.string(outfile)\n");
 printf("process.MINIAODSIMoutput.fileName = cms.untracked.string(outfile2)\n");}
 {print $0}' step3_RAW2DIGI_L1Reco_RECO_EI_PAT.py >& step3_RAW2DIGI_L1Reco_RECO_EI_PAT_run.py
 fi
@@ -102,7 +101,7 @@ fi
 if [[ -n "$RUN" ]]; then
 
 cmsRun ${CONFIG}_cfi_GEN_SIM_run.py             >& ${CONFIG}_cfi_GEN_SIM_run_${ID}.log
-cmsRun step2_DIGI_L1_DIGI2RAW_HLT_run.py        >& step2_DIGI_L1_DIGI2RAW_HLT_run_${ID}.py
+cmsRun step2_DIGI_L1_DIGI2RAW_HLT_run.py        >& step2_DIGI_L1_DIGI2RAW_HLT_run_${ID}.log
 cmsRun step3_RAW2DIGI_L1Reco_RECO_EI_PAT_run.py >& step3_RAW2DIGI_L1Reco_RECO_EI_PAT_run_${ID}.log
 
 fi
