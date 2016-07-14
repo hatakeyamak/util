@@ -25,11 +25,11 @@ Submit to pbs
 ```
 qsub -v nproc=1,dir=ZMM_2016_v11,seed=2,id=2 ./util/scripts/qsub_run.sh 
 
-for i in {3..100}; do qsub -q batch    -v nproc=1,dir=ZMM_2016_v11,seed=$i,id=$i ./util/scripts/qsub_run.sh; sleep 1; done
+for i in {1..100}; do qsub -q anderson -v nproc=1,dir=ZMM_2016_v11,seed=$i,id=$i ./util/scripts/qsub_run.sh; sleep 1; done
 
-for i in {3..100}; do qsub -q anderson -v nproc=1,dir=ZMM_2017_v11,seed=$i,id=$i ./util/scripts/qsub_run.sh; sleep 1; done
+for i in {1..100}; do qsub -q anderson -v nproc=1,dir=ZMM_2017_v11,seed=$i,id=$i ./util/scripts/qsub_run.sh; sleep 1; done
 
-for i in {3..100}; do qsub -q moonshot -v nproc=1,dir=ZMM_2017full_v11,seed=$i,id=$i ./util/scripts/qsub_run.sh; sleep 1; done
+for i in {1..100}; do qsub -q anderson -v nproc=1,dir=ZMM_2017full_v11,seed=$i,id=$i ./util/scripts/qsub_run.sh; sleep 1; done
 ```
 
 Copy to LPC
