@@ -35,7 +35,7 @@ while read p; do
 	split --lines=100 $KEY'_copy.txt' $KEY'_c_split'
 	for f in `ls | grep $KEY'_c_split'`; do
 	    echo $f
-	    qsub -q moonshot -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
+	    qsub -q moonshot -l walltime=48:00:00 -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
 	done
 
     fi
@@ -44,7 +44,7 @@ while read p; do
 	split --lines=50 $KEY'_missing.txt' $KEY'_m_split'
 	for f in `ls | grep $KEY'_m_split'`; do
 	    echo $f
-	    qsub -q batch -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
+	    qsub -q moonshot -l walltime=48:00:00 -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
 	done
 
     fi
@@ -53,7 +53,7 @@ while read p; do
 	split --lines=100 $KEY'_obsolete.txt' $KEY'_o_split'
 	for f in `ls | grep $KEY'_o_split'`; do
 	    echo $f
-	qsub -q moonshot -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
+	    qsub -q moonshot -l walltime=48:00:00 -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
 	done
 
     fi
