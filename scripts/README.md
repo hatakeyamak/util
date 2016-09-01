@@ -2,9 +2,9 @@
 Creating basic configuration files
 ------------------------------
 ```
-./util/scripts/MC_Phase1.sh -p 1 -m 1 -e 100 -d ZMM_2016_v11 -n
-./util/scripts/MC_Phase1.sh -p 1 -m 2 -e 100 -d ZMM_2017_v11 -n
-./util/scripts/MC_Phase1.sh -p 1 -m 3 -e 100 -d ZMM_2017full_v11 -n
+./util/scripts/MC_Phase1.sh -p 1 -m 1 -e 100 -d ZMM_2016_v11 -n -v
+./util/scripts/MC_Phase1.sh -p 1 -m 2 -e 100 -d ZMM_2017_v11 -n -v
+./util/scripts/MC_Phase1.sh -p 1 -m 3 -e 100 -d ZMM_2017full_v11 -n -v
 ```
 
 Creating modified configuration files in order to run several parallel jobs (and run locally)
