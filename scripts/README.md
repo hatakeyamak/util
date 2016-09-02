@@ -1,4 +1,10 @@
 
+Check-out
+------------------------------
+```
+git clone git@github.com:hatakeyamak/util.git
+```
+
 Creating basic configuration files
 ------------------------------
 ```
