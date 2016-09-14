@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#modes:   1 = 2016, 2 = 2017 (no QIE11), 3 = 2017 (full)
+#modes:   0 = run2, 1 = 2016, 2 = 2017 (no QIE11), 3 = 2017 (full)
 #process: 0 = SinglePionE50, 1 = ZMM, 2 = ZEE, 3 = TTbar
 MODE=0
 EXTRA=""
@@ -29,7 +29,7 @@ while getopts "d:e:p:m:nv" opt; do
   esac
 done
 
-if [[ $MODE -eq 0 || $MODE -gt 3 ]]; then
+if [[ $MODE -lt 0 || $MODE -gt 3 ]]; then
   echo "Unknown mode $MODE"
   exit 1
 fi
@@ -54,6 +54,9 @@ elif [[ $MODE -eq 3 ]]; then
   ERA="Run2_2017"
   GEOM="Configuration.Geometry.GeometryExtended2017dev_cff,Configuration.Geometry.GeometryExtended2017devReco_cff"
   SLHC="SLHCUpgradeSimulations/Configuration/HCalCustoms.customise_Hcal2017Full"
+elif [[ $MODE -eq 0 ]]; then
+  COND="auto:run2_mc"
+  ERA="Run2_2016"
 else
   echo "Unknown mode $MODE"
   exit 1
@@ -82,20 +85,39 @@ set -x
 
 echo $CONFIG $PROCESS $NEV
 
-cmsDriver.py ${CONFIG}_cfi  --conditions ${COND} -n ${NEV} --era ${ERA} --geometry ${GEOM} --eventcontent FEVTDEBUG -s GEN,SIM --datatier GEN-SIM --beamspot Realistic50ns13TeVCollision --fileout file:step1.root --customise ${SLHC} ${EXTRA} > step1_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
+if [[ $MODE -eq 0 ]]; then
 
-#awk -v SEED=$SEED '/EmptySource/{printf("process.RandomNumberGeneratorService.generator.initialSeed = %d\n",SEED)}{print $0}' ${CONFIG}_cfi_GEN_SIM.py > ${CONFIG}_cfi_GEN_SIM_rndmseed.py
+    cmsDriver.py ${CONFIG}_cfi  --conditions ${COND} -n ${NEV} --era ${ERA} --eventcontent FEVTDEBUG -s GEN,SIM --datatier GEN-SIM --beamspot Realistic50ns13TeVCollision --fileout file:step1.root ${EXTRA} > step1_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
 
-cmsDriver.py step2  --conditions ${COND} -s DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@relval25ns --datatier GEN-SIM-DIGI-RAW-HLTDEBUG -n -1 --era ${ERA} --geometry ${GEOM} --eventcontent FEVTDEBUGHLT --filein file:step1.root  --fileout file:step2.root --customise ${SLHC} ${EXTRA} > step2_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
+    cmsDriver.py step2  --conditions ${COND} -s DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@relval25ns --datatier GEN-SIM-DIGI-RAW-HLTDEBUG -n -1 --era ${ERA} --eventcontent FEVTDEBUGHLT --filein file:step1.root  --fileout file:step2.root ${EXTRA} > step2_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
 
-if [[ -n "$VAL" ]]; then
+    if [[ -n "$VAL" ]]; then
 
-cmsDriver.py step3  --runUnscheduled  --conditions ${COND} -s RAW2DIGI,L1Reco,RECO,EI,PAT,VALIDATION:@standardValidation+@miniAODValidation,DQM:@standardDQM+@miniAODDQM --datatier GEN-SIM-RECO,MINIAODSIM,DQMIO -n -1 --era ${ERA} --geometry ${GEOM} --eventcontent RECOSIM,MINIAODSIM,DQM --filein file:step2.root  --fileout file:step3.root --customise ${SLHC} ${EXTRA} > step3_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
+	cmsDriver.py step3  --runUnscheduled  --conditions ${COND} -s RAW2DIGI,L1Reco,RECO,EI,PAT,VALIDATION:@standardValidation+@miniAODValidation,DQM:@standardDQM+@miniAODDQM --datatier GEN-SIM-RECO,MINIAODSIM,DQMIO -n -1 --era ${ERA} --eventcontent RECOSIM,MINIAODSIM,DQM --filein file:step2.root  --fileout file:step3.root ${EXTRA} > step3_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
 
-cmsDriver.py step4  --runUnscheduled  --conditions ${COND} -s HARVESTING:@standardValidation+@standardDQM+@miniAODValidation+@miniAODDQM -n -1 --era ${ERA} --geometry ${GEOM} --filetype DQM --filein file:step3_inDQM.root  --fileout file:step4.root --customise ${SLHC} ${EXTRA} > step4_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
+	cmsDriver.py step4  --runUnscheduled  --conditions ${COND} -s HARVESTING:@standardValidation+@standardDQM+@miniAODValidation+@miniAODDQM -n -1 --era ${ERA} --filetype DQM --filein file:step3_inDQM.root  --fileout file:step4.root ${EXTRA} > step4_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
+
+    else
+	
+	cmsDriver.py step3  --runUnscheduled  --conditions ${COND} -s RAW2DIGI,L1Reco,RECO,EI,PAT --datatier GEN-SIM-RECO,MINIAODSIM -n -1 --era ${ERA} --eventcontent RECOSIM,MINIAODSIM --filein file:step2.root  --fileout file:step3.root ${EXTRA} > step3_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
+
+    fi
 
 else
 
-cmsDriver.py step3  --runUnscheduled  --conditions ${COND} -s RAW2DIGI,L1Reco,RECO,EI,PAT --datatier GEN-SIM-RECO,MINIAODSIM -n -1 --era ${ERA} --geometry ${GEOM} --eventcontent RECOSIM,MINIAODSIM --filein file:step2.root  --fileout file:step3.root --customise ${SLHC} ${EXTRA} > step3_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
+    cmsDriver.py ${CONFIG}_cfi  --conditions ${COND} -n ${NEV} --era ${ERA} --geometry ${GEOM} --eventcontent FEVTDEBUG -s GEN,SIM --datatier GEN-SIM --beamspot Realistic50ns13TeVCollision --fileout file:step1.root --customise ${SLHC} ${EXTRA} > step1_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
 
+    cmsDriver.py step2  --conditions ${COND} -s DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@relval25ns --datatier GEN-SIM-DIGI-RAW-HLTDEBUG -n -1 --era ${ERA} --geometry ${GEOM} --eventcontent FEVTDEBUGHLT --filein file:step1.root  --fileout file:step2.root --customise ${SLHC} ${EXTRA} > step2_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
+
+    if [[ -n "$VAL" ]]; then
+
+	cmsDriver.py step3  --runUnscheduled  --conditions ${COND} -s RAW2DIGI,L1Reco,RECO,EI,PAT,VALIDATION:@standardValidation+@miniAODValidation,DQM:@standardDQM+@miniAODDQM --datatier GEN-SIM-RECO,MINIAODSIM,DQMIO -n -1 --era ${ERA} --geometry ${GEOM} --eventcontent RECOSIM,MINIAODSIM,DQM --filein file:step2.root  --fileout file:step3.root --customise ${SLHC} ${EXTRA} > step3_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
+
+	cmsDriver.py step4  --runUnscheduled  --conditions ${COND} -s HARVESTING:@standardValidation+@standardDQM+@miniAODValidation+@miniAODDQM -n -1 --era ${ERA} --geometry ${GEOM} --filetype DQM --filein file:step3_inDQM.root  --fileout file:step4.root --customise ${SLHC} ${EXTRA} > step4_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
+
+    else
+
+	cmsDriver.py step3  --runUnscheduled  --conditions ${COND} -s RAW2DIGI,L1Reco,RECO,EI,PAT --datatier GEN-SIM-RECO,MINIAODSIM -n -1 --era ${ERA} --geometry ${GEOM} --eventcontent RECOSIM,MINIAODSIM --filein file:step2.root  --fileout file:step3.root --customise ${SLHC} ${EXTRA} > step3_${PROCESS}_UP15+${PROCESS}_UP15+DIGIUP15+RECOUP15+HARVESTUP15.log  2>&1
+
+    fi
 fi
