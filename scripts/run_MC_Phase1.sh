@@ -98,6 +98,25 @@ printf("process.MINIAODSIMoutput.fileName = cms.untracked.string(outfile2)\n");}
 fi
 fi
 
+if [ -f step3_RAW2DIGI_L1Reco_RECO_EI_PAT_VALIDATION_DQM.py ]; then
+if [ -f step3_RAW2DIGI_L1Reco_RECO_EI_PAT_run.py ]; then
+ echo 'step3_RAW2DIGI_L1Reco_RECO_EI_PAT_run.py' 'already exists'
+else 
+awk 'BEGIN{printf("import os\n");
+printf("idnum = int(os.environ.get(\047ID\047, \047 0\047))\n");
+printf("infile = \047file:step2_\047+str(idnum)+\047.root\047\n");
+printf("outfile = \047file:step3_\047+str(idnum)+\047.root\047\n");
+printf("outfile2 = \047file:step3_\047+str(idnum)+\047_inMINIAODSIM.root\047\n");
+printf("outfile3 = \047file:step3_\047+str(idnum)+\047_inDQM.root\047\n");
+printf("\n")}
+/Production/{printf("process.source.fileNames = cms.untracked.vstring(infile)\n");}
+/Additional/{printf("process.RECOSIMoutput.fileName = cms.untracked.string(outfile)\n");
+printf("process.MINIAODSIMoutput.fileName = cms.untracked.string(outfile2)\n");
+printf("process.DQMoutput.fileName = cms.untracked.string(outfile3)\n");}
+{print $0}' step3_RAW2DIGI_L1Reco_RECO_EI_PAT_VALIDATION_DQM.py >& step3_RAW2DIGI_L1Reco_RECO_EI_PAT_run.py
+fi
+fi
+
 if [[ -n "$RUN" ]]; then
 
 cmsRun ${CONFIG}_cfi_GEN_SIM_run.py             >& ${CONFIG}_cfi_GEN_SIM_run_${ID}.log
