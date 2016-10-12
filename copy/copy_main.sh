@@ -21,22 +21,19 @@ IFS=$'\n'
 export remote=srm://cmseos.fnal.gov:8443/srm/v2/server?SFN=//eos/uscms/store/user/hatake/copy
 export remotePrefix=srm://cmseos.fnal.gov:8443/srm/v2/server?SFN=//
 
-#export now=$(date +"%Y-%m-%d-%S")
-#echo $now
-
 # split _missing.txt and _obsolete.txt, submit jobs
 rm $ORGPWD/tmp/*_split*
 cd tmp
 grep -v '^#' < directory.list | { 
 while read p; do
-    export KEY=`echo $p | awk '{print $2}'`
+    export LIST=`echo $p | awk '{print $2}'`
     export DIR=`echo $p | awk '{print $1}'`
-    echo $p $KEY $DIR
+    echo $p $LIST $DIR
 
     if [ $type -eq 1 ]; then
 
-	split --lines=100 $KEY'_copy.txt' $KEY'_c_split'
-	for f in `ls | grep $KEY'_c_split'`; do
+	split --lines=100 $LIST'_copy.txt' $LIST'_c_split'
+	for f in `ls | grep $LIST'_c_split'`; do
 	    echo $f
 	    qsub -q moonshot -l walltime=48:00:00 -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
 	done
@@ -44,8 +41,8 @@ while read p; do
     fi
     if [ $type -ge 2 ]; then
 
-	split --lines=200 $KEY'_missing.txt' $KEY'_m_split'
-	for f in `ls | grep $KEY'_m_split'`; do
+	split --lines=200 $LIST'_missing.txt' $LIST'_m_split'
+	for f in `ls | grep $LIST'_m_split'`; do
 	    echo $f
 	    qsub -q moonshot -l walltime=48:00:00 -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
 	done
