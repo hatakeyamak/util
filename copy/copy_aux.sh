@@ -26,8 +26,10 @@ if [ $type -eq 0 ]; then
 
     rm $ORGPWD/tmp/*.txt
     echo 'For loop over files in a remote directory'
-    for f in `lcg-ls -l -b -D srmv2 $remote`; do
-	export FILE=`echo $f | awk '{print $7}'`
+    printenv remote remotePrefix
+    gfal-ls $remote
+    for f in `gfal-ls $remote`; do
+	export FILE=`echo $f | awk '{print $1}'`
 	export LFN=`echo $FILE | sed -e 's/\/eos//' | sed -e 's/\/uscms//'`
 	export FILENAME=`basename $LFN`
 	echo $FILE $LFN $FILENAME

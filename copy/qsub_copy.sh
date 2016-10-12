@@ -22,10 +22,15 @@ export X509_USER_PROXY=~/.x509_user_proxy
 #  --from-site T3_US_FNALLPC \
 #  $filelist 'file:////data3/'$toDir
 
+export now=$(date +"%Y-%m-%d-%S")
+echo $now
+export FILENAME=`basename $filelist`
+export tmpfile='/tmp/'$FILENAME'.'$now
+cp $filelist $tmpfile
+
 # 
 # With Baylor SE
 python ~/local/bin/data_replica.py \
  --from-site T3_US_FNALLPC \
  --to-site T3_US_Baylor \
- $filelist $toDir
-
+ $tmpfile $toDir

@@ -21,6 +21,9 @@ IFS=$'\n'
 export remote=srm://cmseos.fnal.gov:8443/srm/v2/server?SFN=//eos/uscms/store/user/hatake/copy
 export remotePrefix=srm://cmseos.fnal.gov:8443/srm/v2/server?SFN=//
 
+#export now=$(date +"%Y-%m-%d-%S")
+#echo $now
+
 # split _missing.txt and _obsolete.txt, submit jobs
 rm $ORGPWD/tmp/*_split*
 cd tmp
@@ -41,17 +44,8 @@ while read p; do
     fi
     if [ $type -ge 2 ]; then
 
-	split --lines=50 $KEY'_missing.txt' $KEY'_m_split'
+	split --lines=200 $KEY'_missing.txt' $KEY'_m_split'
 	for f in `ls | grep $KEY'_m_split'`; do
-	    echo $f
-	    qsub -q moonshot -l walltime=48:00:00 -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
-	done
-
-    fi
-    if [ $type -eq 3 ]; then
-
-	split --lines=100 $KEY'_obsolete.txt' $KEY'_o_split'
-	for f in `ls | grep $KEY'_o_split'`; do
 	    echo $f
 	    qsub -q moonshot -l walltime=48:00:00 -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh
 	done
