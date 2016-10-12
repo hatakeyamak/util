@@ -1,12 +1,17 @@
+/store/user/lpcsusyhad/SusyRA2Analysis2015/Run2ProductionV10      V10_SingleMuon SingleMuon
+/store/user/lpcsusyhad/SusyRA2Analysis2015/Run2ProductionV10      V10_TTJets     TTJets
+/store/user/lpcsusyhad/SusyRA2Analysis2015/Run2ProductionV10      V10_WJets      WJets
+/store/user/lpcsusyhad/SusyRA2Analysis2015/Run2ProductionV10      V10_ST_        ST_
+#
 /store/user/lpcsusyhad/SusyRA2Analysis2015/Run2ProductionV10/scan V10scan
 /store/user/lpcsusyhad/SusyRA2Analysis2015/Run2ProductionV10      V10
 /store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV10/scan/tree_SLm V10scan_treeSLm
 /store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV10/tree_SLm      V10_treeSLm
 #
-/store/user/lpcsusyhad/SusyRA2Analysis2015/Run2ProductionV9/scan V9scan
-/store/user/lpcsusyhad/SusyRA2Analysis2015/Run2ProductionV9      V9
-/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV9/scan/tree_SLm V9scan_treeSLm
-/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV9/tree_SLm      V9_treeSLm
+#/store/user/lpcsusyhad/SusyRA2Analysis2015/Run2ProductionV9/scan V9scan
+#/store/user/lpcsusyhad/SusyRA2Analysis2015/Run2ProductionV9      V9
+#/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV9/scan/tree_SLm V9scan_treeSLm
+#/store/user/lpcsusyhad/SusyRA2Analysis2015/Skims/Run2ProductionV9/tree_SLm      V9_treeSLm
 #
 #/store/user/lpcsusyhad/SusyRA2Analysis2015/Run2ProductionV8/scan V8scan
 #/store/user/lpcsusyhad/SusyRA2Analysis2015/Run2ProductionV8      V8
