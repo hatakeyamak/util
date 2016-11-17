@@ -41,7 +41,7 @@ while read p; do
     fi
     if [ $type -ge 2 ]; then
 
-	split --lines=200 $LIST'_missing.txt' $LIST'_m_split'
+	split --lines=50 $LIST'_missing.txt' $LIST'_m_split'
 	for f in `ls | grep $LIST'_m_split'`; do
 	    echo $f
 	    qsub -q moonshot -l walltime=48:00:00 -N $f -v filelist=$f,toDir=$DIR ../qsub_copy.sh

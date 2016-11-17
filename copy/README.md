@@ -16,7 +16,7 @@ bash copy_aux.sh  0              # this copies necessary txt files from LPC to k
 
 ```
 bash copy_aux.sh  3              # check locally existing files, in order to check if local files are newer than remote files.
-ls -l tmp/*obsolete*.txt         # if this is not empty, you should think about deleting these old local files. probably files are updated remotely, so the local files are obsolete.
+ls -l tmp/*obsolete*.txt         # if this is not empty, you should think about deleting these old local files. probably files are updated remotely, so the local files are obsolete. If there are non-empty files, source them to clean up the obsolete files.
 ```
 
 ```
