@@ -1,4 +1,24 @@
 
+Using LPC scripts
+------
+```
+git clone git@github.com:FNALLPC/lpc-scripts.git
+cd lpc-scripts
+cp ../AAA*.txt
+cp ../AAA*.sh
+python copyfiles.py T3_US_FNALLPC \
+ /Stop_production/Summer16_80X_Jan_2017_Ntp_v12X/ZZTo4Q_13TeV_amcatnloFXFX_madspin_pythia8/ local \
+ /cms/data/store/user/lpcsusyhad/Stop_production/Summer16_80X_Jan_2017_Ntp_v12X/ZZTo4Q_13TeV_amcatnloFXFX_madspin_pythia8/ \
+ -p gfal -r -su lpcsusyhad -t 86400
+python copyfiles.py T3_US_FNALLPC \
+ /Stop_production/Summer16_80X_Jan_2017_Ntp_v12X/WWW_4F_TuneCUETP8M1_13TeV-amcatnlo-pythia8/ local \
+ /cms/data//store/user/lpcsusyhad/Stop_production/Summer16_80X_Jan_2017_Ntp_v12X/WWW_4F_TuneCUETP8M1_13TeV-amcatnlo-pythia8/ \
+ -p gfal -r -su lpcsusyhad -t 86400
+bash AAA_dir_copy.sh AAA_dir_list_part1.txt &>  AAA_dir_list_part1.log &
+nohup bash AAA_dir_copy.sh AAA_dir_list_part2.txt &>AAA_dir_list_part2.log &
+```
+
+
 on lpc
 ------
 ```
