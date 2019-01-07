@@ -1,0 +1,3 @@
+Stop_production/Summer16_80X_Jan_2017_Ntp_v12X/
+Stop_production/Summer16_80X_Mar_2017_Ntp_v13X_rerun
+Stop_production/Summer16_80X_Mar_2017_Ntp_v13X_UCSB_signals
