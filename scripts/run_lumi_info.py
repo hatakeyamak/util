@@ -32,34 +32,44 @@ generator, generatorLabel = Handle("<GenLumiInfoHeader>"), "generator"
 # open file (you can use 'edmFileUtil -d /store/whatever.root' to get the physical file name)
 
 input_file_list  = sys.argv[1]+'_'+sys.argv[2]+'_list.txt'
+print input_file_list
 text_file = open(input_file_list, "r")
 list = [line.rstrip() for line in text_file.readlines()]
 print list
-lumiblocks = Lumis(list)
 
 output_ROOT_file_name  = sys.argv[1]+'_'+sys.argv[2]+'_nevents.root'
 output_file            = ROOT.TFile(output_ROOT_file_name, 'recreate')
 
-for ilumi,lumiblock in enumerate(lumiblocks):
-    #if ilumi>100: break
-    lumiblock.getByLabel(genFilterLabel, genFilter)
-    lumiblock.getByLabel(generatorLabel, generator)
+for i in range(len(list)):
 
-    genFilterInfo = genFilter.product()
-    generatorInfo = generator.product()
-    items = re.split('_+', generatorInfo.configDescription())
-    print generatorInfo.configDescription(),genFilterInfo.sumPassWeights(),genFilterInfo.sumWeights()
-    print items[0],items[1],items[2]
-    mMother=items[1]
-    mDaughter=items[2]
-    if items[0]=="TChiWH":
-        mMother=items[3]
-        mDaughter=items[4]
-        print mMother,mDaughter
+    #if i>3: break
+    print list[i]
+    lumiblocks = Lumis(list[i])
     
-    H_NEvents.Fill(float(mMother),float(mDaughter),genFilterInfo.sumWeights());
-    H_NEvents_Pass.Fill(float(mMother),float(mDaughter),genFilterInfo.sumPassWeights());
+    for ilumi,lumiblock in enumerate(lumiblocks):
+        #if ilumi>20: break
+        lumiblock.getByLabel(genFilterLabel, genFilter)
+        lumiblock.getByLabel(generatorLabel, generator)
 
+        genFilterInfo = genFilter.product()
+        generatorInfo = generator.product()
+        items = re.split('_+', generatorInfo.configDescription())
+        mMother=items[len(items)-2]
+        mDaughter=items[len(items)-1]
+        print generatorInfo.configDescription(),genFilterInfo.sumPassWeights(),genFilterInfo.sumWeights()
+        print items,len(items),mMother,mDaughter
+    
+        H_NEvents.Fill(float(mMother),float(mDaughter),genFilterInfo.sumWeights());
+        H_NEvents_Pass.Fill(float(mMother),float(mDaughter),genFilterInfo.sumPassWeights());
+
+        del items
+        del mMother,mDaughter
+        del genFilterInfo
+        del generatorInfo
+        del lumiblock
+
+    del lumiblocks
+        
 # Set up canvas : 
 w =  700 
 h =  700
